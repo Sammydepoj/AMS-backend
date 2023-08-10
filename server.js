@@ -20,7 +20,7 @@ app.post("/getCode", () => {
   const uniqueCode = Math.floor(Math.random() * 900000) + 100000;
   console.log(uniqueCode);
 });
-dotenv.config({ path: "config.env" });
+dotenv.config();
 
 // eslint-disable-next-line no-undef
 
