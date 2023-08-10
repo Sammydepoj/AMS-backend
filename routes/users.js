@@ -4,6 +4,8 @@ const auth = require("../middleware/auth");
 
 const userRouter = express.Router();
 
-userRouter.post("/getAllParticipants", auth, getAllParticipants);
+//return auth middleware
+
+userRouter.get("/getAllParticipants", getAllParticipants);
 
 module.exports = userRouter

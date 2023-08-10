@@ -10,16 +10,13 @@ const connectDB = require("./database/connect");
 const app = express();
 
 app.use(cors());
-app.use(getAllParticipants)
+app.use("/",getAllParticipants)
 
 app.get("/", (req, res) => {
   res.send("Welcome to AMS base url");
 });
 
-app.post("/getCode", () => {
-  const uniqueCode = Math.floor(Math.random() * 900000) + 100000;
-  console.log(uniqueCode);
-});
+
 dotenv.config();
 
 // eslint-disable-next-line no-undef
