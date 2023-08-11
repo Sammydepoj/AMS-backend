@@ -4,18 +4,19 @@ const express = require("express");
 // eslint-disable-next-line no-undef
 const dotenv = require("dotenv");
 const cors = require("cors");
-const getAllParticipants = require("./routes/users")
+const getAllParticipants = require("./routes/users");
+const signinRouter = require("./routes/signin");
 const connectDB = require("./database/connect");
 
 const app = express();
 
 app.use(cors());
-app.use("/",getAllParticipants)
+app.use("/", getAllParticipants);
+app.use("/", signinRouter);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to AMS base url");
+  res.send("Welcome to AMS Restful APIs");
 });
-
 
 dotenv.config();
 
