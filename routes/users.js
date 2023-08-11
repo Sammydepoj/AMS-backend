@@ -8,4 +8,4 @@ const userRouter = express.Router();
 
 userRouter.get("/getAllParticipants", getAllParticipants);
 
-module.exports = userRouter
+module.exports = userRouter;
