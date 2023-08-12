@@ -17,12 +17,12 @@ const signin = async (req, response) => {
       data: null,
     });
   try {
-    let user = await Users.findOne({ email: req.body?.email });
-    // console.log(req?.body);
+    let user = await Users.findOne({ email: req.body.email });
+    // console.log(req);
     if (!user)
       return response.status(400).send({
         responseCode: "94",
-        responseMessage: "Invalid email or password",
+        responseMessage: "Invalid email or passwordssssss",
         data: null,
       });
     const validatePassword = await bcrypt.compare(
@@ -66,6 +66,7 @@ const signin = async (req, response) => {
       responseMessage: "Internal server error",
       data: null,
     });
+    console.log(error);
   }
 };
 
