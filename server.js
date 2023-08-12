@@ -7,13 +7,13 @@ const cors = require("cors");
 const getAllParticipants = require("./routes/users");
 const signinRouter = require("./routes/signin");
 const connectDB = require("./database/connect");
-const { urlencoded } = require("body-parser");
 
 const app = express();
 
 // Parse JSON and URL-encoded bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("trust proxy", true);
 
 app.use(cors());
 app.use("/", getAllParticipants);
