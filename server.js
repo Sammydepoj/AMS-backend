@@ -7,6 +7,8 @@ const cors = require("cors");
 const getAllParticipants = require("./routes/users");
 const signinRouter = require("./routes/signin");
 const connectDB = require("./database/connect");
+const signupRouter = require("./routes/signup");
+const clockInRouter = require("./routes/clockIn");
 
 const app = express();
 
@@ -18,6 +20,8 @@ app.set("trust proxy", true);
 app.use(cors());
 app.use("/", getAllParticipants);
 app.use("/", signinRouter);
+app.use('/', signupRouter);
+app.use("/", clockInRouter)
 
 app.get("/", (req, res) => {
   res.send("Welcome to AMS Restful APIs");
