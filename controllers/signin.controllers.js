@@ -25,16 +25,16 @@ const signin = async (req, response) => {
         responseMessage: "Invalid email or passwordssssss",
         data: null,
       });
-    // const validatePassword = await bcrypt.compare(
-    //   req.body?.password,
-    //   user.password
-    // );
-    // if (!validatePassword)
-    //   return response.status(400).send({
-    //     responseCode: "93",
-    //     responseMessage: "Invalid email or password",
-    //     data: null,
-    //   });
+    const validatePassword = await bcrypt.compare(
+      req.body?.password,
+      user.password
+    );
+    if (!validatePassword)
+      return response.status(400).send({
+        responseCode: "93",
+        responseMessage: "Invalid email or password",
+        data: null,
+      });
     if (!user.isVerified)
       return response.send({
         responseCode: "00",
