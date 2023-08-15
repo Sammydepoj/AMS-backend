@@ -1,13 +1,9 @@
-const express = require("express");
 const Joi = require("joi");
 
-const clockInRouter = express.Router();
-
-clockInRouter.post("/clockin", (request, response) => {
-
-    const lattitude = "12.1234";
-    const longitude = "12.5678"
-    const location = `${lattitude}, ${longitude}`;
+const clockIn = async (request, response) => {
+  const lattitude = process.env.SAIL_LATTITUDE2;
+  const longitude = process.env.SAIL_LONGITUDE2;
+  const location = `${lattitude}, ${longitude}`;
   const schema = Joi.object({
     location: Joi.string().required(),
   });
@@ -26,12 +22,12 @@ clockInRouter.post("/clockin", (request, response) => {
       responseMessage: "Succesfully clocked in",
       data: null,
     });
-    if(request.body.location !== location)
+  if (request.body.location !== location)
     return response.status(400).send({
       responseCode: "93",
       responseMessage: "Unable to clock in: Invalid location",
       data: null,
     });
-});
+};
 
-module.exports = clockInRouter;
+module.exports = clockIn;
