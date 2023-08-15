@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const signupSchema = new mongoose.Schema({
   firstName: {
@@ -37,8 +37,19 @@ const signupSchema = new mongoose.Schema({
   dateUpdated: {
     type: String,
   },
+  clockInDate: {
+    type: String,
+    default: new Date().toJSON(),
+  },
+  clockOutDate: {
+    type: String,
+  },
+  clockInStatus: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Signup = mongoose.model("signup", signupSchema);
 
-module.exports = Signup
+module.exports = Signup;

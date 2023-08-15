@@ -2,7 +2,7 @@ const Users = require("../models/users");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../utils/createToken");
-const Signup = require("../models/signupSchema");
+const User = require("../models/users");
 
 const signin = async (request, response) => {
   const schema = Joi.object({
@@ -18,7 +18,7 @@ const signin = async (request, response) => {
       data: null,
     });
   try {
-    let user = await Signup.findOne({ email: request.body.email });
+    let user = await User.findOne({ email: request.body.email });
     if (!user)
       return response.status(400).send({
         responseCode: "94",
@@ -35,18 +35,18 @@ const signin = async (request, response) => {
         responseMessage: "Invalid email or password",
         data: null,
       });
-    // if (!user.isVerified)
-    //   return response.send({
-    //     responseCode: "00",
-    //     responseMessage: "Kindly verify your account to proceed",
-    //     data: {
-    //       _id: user._id,
-    //       email: user.email,
-    //       username: user.username,
-    //       isVerified: user.isVerified,
-    //       dateCreated: user.dateCreated,
-    //     },
-    //   });
+    if (!user.isApproved)
+      return response.send({
+        responseCode: "00",
+        responseMessage: "Kindly verify your account to proceed",
+        data: {
+          _id: user._id,
+          email: user.email,
+          username: user.username,
+          isApproved: user.isApproved,
+          dateCreated: user.dateCreated,
+        },
+      });
     const token = createToken(user);
     response.status(200).send({
       responseCode: "00",
@@ -55,7 +55,7 @@ const signin = async (request, response) => {
         _id: user._id,
         email: user.email,
         username: user.username,
-        isVerified: user.isVerified,
+        isApproved: user.isApproved,
         dateCreated: user.dateCreated,
         token,
       },
