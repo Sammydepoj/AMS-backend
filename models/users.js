@@ -109,6 +109,10 @@ const usersSchema = new mongoose.Schema({
     enum: ["USER", "ADMIN"],
     default: "USER",
   },
+  otp: {
+    type: Number,
+    minlength: 4,
+  },
   startDate: {
     type: String,
     minlength: 3,
@@ -117,9 +121,15 @@ const usersSchema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
-  isVerified: {
+  isApproved: {
     type: Boolean,
     default: false,
+  },
+  approvedBy: {
+    type: String,
+  },
+  approvedDate: {
+    type: String,
   },
   isDeactivated: {
     type: Boolean,
@@ -135,6 +145,17 @@ const usersSchema = new mongoose.Schema({
   },
   dateUpdated: {
     type: String,
+  },
+  clockInDate: {
+    type: String,
+    default: new Date().toJSON(),
+  },
+  clockOutDate: {
+    type: String,
+  },
+  clockInStatus: {
+    type: Boolean,
+    default: false,
   },
 });
 

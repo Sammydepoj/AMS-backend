@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const Signup = require("../models/signupSchema");
+const User = require("../models/users");
 const ResponseCode = require("../responseCode");
 const bcrypt = require("bcrypt");
 
@@ -22,7 +22,7 @@ const signUp = async (request, response) => {
   }
   try {
     // checking to see if user with email exists in the DB
-    let user = await Signup.findOne({
+    let user = await User.findOne({
       email: request.body?.email,
     });
 
@@ -36,7 +36,7 @@ const signUp = async (request, response) => {
       });
     const salt = await bcrypt.genSalt(10);
     const { firstName, lastName, email, password, programme } = request.body;
-    user = new Signup({
+    user = new User({
       firstName,
       lastName,
       email,
