@@ -7,8 +7,9 @@ const clockIn = async (request, response) => {
   const schema = Joi.object({
     location: Joi.string().required(),
   });
-
+  console.log(lattitude, longitude);
   const { error } = schema.validate(request.body);
+  console.log("request", request.body.location);
 
   if (error)
     return response.status(400).send({
