@@ -10,7 +10,6 @@ const clockOutHandler = async (request, response) => {
         data: null,
       });
     }
-    console.log(user.clockInStatus);
     if (!user.clockInStatus) {
       return response.status(403).send({
         responseCode: "93",
@@ -21,8 +20,11 @@ const clockOutHandler = async (request, response) => {
     if (date < 14) {
       return response.status(403).send({
         responseCode: "93",
-        responseMessage: "Clock time is 2pm",
-        data: null,
+        responseMessage: "Clock out time is 2pm",
+        data: {
+          clockInStatus: user.clockInStatus,
+          clockOut: user.clockInDate,
+        },
       });
     }
     user.clockInStatus = false;
@@ -31,7 +33,10 @@ const clockOutHandler = async (request, response) => {
     response.status(200).send({
       responseCode: "00",
       responseMessage: "Clock out Successful",
-      data: null,
+      data: {
+        clockInStatus: user.clockInStatus,
+        clockOut: user.clockOutDate,
+      },
     });
   } catch (error) {
     response.status(500).send({
