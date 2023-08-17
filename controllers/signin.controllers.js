@@ -41,7 +41,8 @@ const signin = async (request, response) => {
         data: {
           _id: user._id,
           email: user.email,
-          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
           isApproved: user.isApproved,
           dateCreated: user.dateCreated,
         },

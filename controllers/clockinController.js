@@ -10,7 +10,7 @@ const clockIn = async (request, response) => {
   const date = new Date().getHours();
   console.log(lattitude, longitude);
   const { error } = schema.validate(request.body);
-  console.log("request", request.body.location);
+  // console.log("request", request.body.location);
 
   if (error)
     return response.status(400).send({
@@ -44,6 +44,7 @@ const clockIn = async (request, response) => {
           });
         } else {
           user.clockInStatus = true;
+          user.clockOutDate = null;
           user.clockInDate = new Date().toString();
           await user.save();
           return response.status(200).send({
@@ -51,6 +52,7 @@ const clockIn = async (request, response) => {
             responseMessage: "Succesfully clocked in",
             data: {
               clockInStatus: user.clockInStatus,
+              clockInDate: user.clockInDate,
             },
           });
         }
