@@ -1,4 +1,3 @@
-const Users = require("../models/users");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../utils/createToken");
@@ -22,7 +21,7 @@ const signin = async (request, response) => {
     if (!user)
       return response.status(400).send({
         responseCode: "94",
-        responseMessage: "Invalid email or passwordssssss",
+        responseMessage: "Invalid email or password",
         data: null,
       });
     const validatePassword = await bcrypt.compare(
@@ -54,7 +53,8 @@ const signin = async (request, response) => {
       data: {
         _id: user._id,
         email: user.email,
-        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         isApproved: user.isApproved,
         dateCreated: user.dateCreated,
         token,
