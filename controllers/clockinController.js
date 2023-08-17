@@ -38,7 +38,9 @@ const clockIn = async (request, response) => {
           return response.status(403).send({
             responseCode: "95",
             responseMessage: "User Already Clocked In",
-            data: null,
+            data: {
+              clockInStatus: user.clockInStatus,
+            },
           });
         } else {
           user.clockInStatus = true;
@@ -47,7 +49,9 @@ const clockIn = async (request, response) => {
           return response.status(200).send({
             responseCode: "00",
             responseMessage: "Succesfully clocked in",
-            data: null,
+            data: {
+              clockInStatus: user.clockInStatus,
+            },
           });
         }
       }
