@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const User = require("../models/users");
+const ClockInHistory = require("../models/clockInHistory");
 
 module.exports = class ClockController {
   static async clockIn(request, response) {
@@ -24,7 +25,6 @@ module.exports = class ClockController {
 
     try {
       const user = await User.findOne({ _id: request.user._id });
-
       if (!user) {
         return response.status(400).send({
           responseCode: "93",
@@ -69,6 +69,11 @@ module.exports = class ClockController {
           clockInDate: user.clockInDate,
         },
       });
+      //   const clockHistory = new ClockInHistory({
+      //     user,
+      //   });
+      //   await clockHistory.save();
+      //   console.log(clockHistory)
     } catch (error) {
       response.status(500).send({
         responseCode: "96",
