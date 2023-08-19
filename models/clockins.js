@@ -1,7 +1,6 @@
-const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
-const clockInSchema = new mongoose.Schema({
+const clock = new mongoose.Schema({
   firstName: {
     type: String,
     minlength: 3,
@@ -17,15 +16,19 @@ const clockInSchema = new mongoose.Schema({
     unique: true,
     required: "Email is required",
   },
-  clockInDate: {
+  date: {
     type: String,
     default: new Date().toJSON(),
   },
   clockInStatus: {
-    type: boolean,
+    type: Boolean,
     default: false,
+  },
+  clockOutStatus: {
+    type: String,
+    default: new Date().toJSON(),
   },
 });
 
-const clockIns = mongoose.model("clockIns", clockInSchema);
+const clockIns = mongoose.model("clockIns", clock);
 module.exports = clockIns;

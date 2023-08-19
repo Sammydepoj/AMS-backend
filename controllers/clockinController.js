@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const User = require("../models/users");
+const Clockins = require("../models/clockins");
 const clockIn = async (request, response) => {
   const lattitude = process.env.SAIL_LATTITUDE2;
   const longitude = process.env.SAIL_LONGITUDE2;
@@ -43,10 +44,15 @@ const clockIn = async (request, response) => {
             },
           });
         } else {
+          const clockIns = new Clockins({
+            user,
+          });
           user.clockInStatus = true;
           user.clockOutDate = null;
           user.clockInDate = new Date().toString();
           await user.save();
+          await clockIns.save();
+
           return response.status(200).send({
             responseCode: "00",
             responseMessage: "Succesfully clocked in",
