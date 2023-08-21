@@ -82,7 +82,10 @@ const signin = async (request, response) => {
     response.status(200).send({
       responseCode: "00",
       responseMessage: "Login successful",
-      data: token,
+      data: {
+        role: user.role,
+        token,
+      },
     });
   } catch (error) {
     response.status(500).send({
