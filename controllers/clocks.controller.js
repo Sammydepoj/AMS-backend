@@ -126,7 +126,7 @@ module.exports = class ClockController {
           responseMessage: "Clock out time is 2pm",
           data: {
             clockInStatus: user.clockInStatus,
-            clockOut: user.clockInDate,
+            clockInTime: user.clockInDate,
           },
         });
       }
@@ -138,7 +138,7 @@ module.exports = class ClockController {
         responseMessage: "Clock out Successful",
         data: {
           clockInStatus: user.clockInStatus,
-          clockOut: user.clockOutDate,
+          clockOutTime: user.clockOutDate,
         },
       });
     } catch (error) {
