@@ -36,13 +36,13 @@ module.exports = class ClockController {
       if (request.body.location !== location)
         return response.status(400).send({
           responseCode: "93",
-          responseMessage: "Unable to clock in: Invalid location",
+          responseMessage: "Unable to clock In: Invalid location",
           data: null,
         });
       if (date > 14) {
         return response.status(403).send({
           responseCode: "93",
-          responseMessage: "You can clock in between 8am and 2pm",
+          responseMessage: "You can clock In between 8am and 2pm",
           data: null,
         });
       }
@@ -60,20 +60,24 @@ module.exports = class ClockController {
       user.clockOutDate = null;
       user.clockInDate = new Date().toString();
       await user.save();
-
+      const clockHistory = new ClockInHistory({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        clockInDate: user.clockInDate,
+        clockInStatus: user.clockInStatus,
+        clockOutDate: null,
+        _id: request.user._id,
+      });
+      await clockHistory.save();
       response.status(200).send({
         responseCode: "00",
-        responseMessage: "Succesfully clocked in",
+        responseMessage: "Succesfully clocked In",
         data: {
           clockInStatus: user.clockInStatus,
           clockInDate: user.clockInDate,
         },
       });
-      //   const clockHistory = new ClockInHistory({
-      //     user,
-      //   });
-      //   await clockHistory.save();
-      //   console.log(clockHistory)
     } catch (error) {
       response.status(500).send({
         responseCode: "96",
@@ -133,6 +137,13 @@ module.exports = class ClockController {
       user.clockInStatus = false;
       user.clockOutDate = new Date().toString();
       await user.save();
+      let clockHistory = await ClockInHistory.findOne({
+        _id: request.user._id,
+      });
+      clockHistory.clockOutDate = user.clockOutDate;
+      clockHistory.clockInStatus = user.clockInStatus;
+
+      await clockHistory.save();
       response.status(200).send({
         responseCode: "00",
         responseMessage: "Clock out Successful",
