@@ -39,13 +39,13 @@ module.exports = class ClockController {
           responseMessage: "Unable to clock In: Invalid location",
           data: null,
         });
-      // if (date > 14) {
-      //   return response.status(403).send({
-      //     responseCode: "93",
-      //     responseMessage: "You can clock In between 8am and 2pm",
-      //     data: null,
-      //   });
-      // }
+      if (date > 14) {
+        return response.status(403).send({
+          responseCode: "93",
+          responseMessage: "You can clock In between 8am and 2pm",
+          data: null,
+        });
+      }
       if (user.clockInStatus) {
         return response.status(403).send({
           responseCode: "95",
@@ -141,7 +141,7 @@ module.exports = class ClockController {
       let clockHistory = await ClockInHistory.findOne({
         userId: request.user._id,
       });
-      
+
       clockHistory.clockOutDate = user.clockOutDate;
       clockHistory.clockInStatus = user.clockInStatus;
       console.log(clockHistory);
