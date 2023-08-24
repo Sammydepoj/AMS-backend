@@ -27,6 +27,10 @@ const clockInSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  userId: {
+    type: String,
+    required: "UserId is required",
+  },
 });
 
 const ClockInHistory = mongoose.model("clockInHistory", clockInSchema);
