@@ -1,4 +1,3 @@
-const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
 const clockInSchema = new mongoose.Schema({
@@ -21,11 +20,15 @@ const clockInSchema = new mongoose.Schema({
     type: String,
     default: new Date().toJSON(),
   },
+  clockOutDate: {
+    type: String,
+  },
   clockInStatus: {
-    type: boolean,
+    type: Boolean,
     default: false,
   },
 });
 
-const clockIns = mongoose.model("clockIns", clockInSchema);
-module.exports = clockIns;
+const ClockInHistory = mongoose.model("clockInHistory", clockInSchema);
+
+module.exports = ClockInHistory;
