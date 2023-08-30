@@ -56,20 +56,32 @@ module.exports = class ClockController {
         });
       }
 
-      user.clockInStatus = true;
-      user.clockOutDate = null;
-      user.clockInDate = new Date().toString();
-      await user.save();
       const clockHistory = new ClockInHistory({
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
+        // email: user.email,
         clockInDate: user.clockInDate,
-        clockInStatus: user.clockInStatus,
+        clockInStatus: true,
         clockOutDate: null,
         userId: request.user._id,
         // _id: request.user._id,
       });
+
+      const currentUser = ClockInHistory.findOne({ _id: clockHistory._id });
+
+      const currentDay = new Date().getDate();
+      if (new Date(currentUser.clockInDate).getDate() === currentDay) {
+        response.status(403).send({
+          responseCode: "95",
+          responseMessage: "You are present today already",
+          data: null,
+        });
+      }
+      user.clockInStatus = true;
+      user.clockOutDate = null;
+      user.clockInDate = new Date().toString();
+
+      await user.save();
       await clockHistory.save();
       response.status(200).send({
         responseCode: "00",
