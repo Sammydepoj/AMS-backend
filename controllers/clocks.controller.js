@@ -59,8 +59,8 @@ module.exports = class ClockController {
       const clockHistory = new ClockInHistory({
         firstName: user.firstName,
         lastName: user.lastName,
-        // email: user.email,
-        clockInDate: user.clockInDate,
+        email: user.email,
+        clockInDate: new Date().toString(),
         clockInStatus: true,
         clockOutDate: null,
         userId: request.user._id,
@@ -81,8 +81,9 @@ module.exports = class ClockController {
       user.clockOutDate = null;
       user.clockInDate = new Date().toString();
 
-      await user.save();
       await clockHistory.save();
+      await user.save();
+
       response.status(200).send({
         responseCode: "00",
         responseMessage: "Succesfully clocked In",
@@ -98,6 +99,7 @@ module.exports = class ClockController {
         data: null,
       });
       console.log(error.message);
+      console.log(error);
     }
   }
 
@@ -155,7 +157,7 @@ module.exports = class ClockController {
       });
 
       clockHistory.clockOutDate = user.clockOutDate;
-      clockHistory.clockInStatus = user.clockInStatus;
+      clockHistory.clockInStatus = false;
       console.log(clockHistory);
       await clockHistory.save();
       response.status(200).send({

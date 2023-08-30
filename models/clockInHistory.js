@@ -11,11 +11,11 @@ const clockInSchema = new mongoose.Schema({
     minlength: 3,
     required: "Last name is required",
   },
-  // email: {
-  //   type: String,
-  //   // unique: true,
-  //   required: "Email is required",
-  // },
+  email: {
+    type: String,
+    // unique: true,
+    // required: "Email is required",
+  },
   clockInDate: {
     type: String,
     default: new Date().toJSON(),
