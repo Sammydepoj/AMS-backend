@@ -13,8 +13,8 @@ const clockInSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    // unique: true,
-    // required: "Email is required",
+    unique: true,
+    required: "Email is required",
   },
   clockInDate: {
     type: String,
