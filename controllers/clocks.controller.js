@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const User = require("../models/users");
 const ClockInHistory = require("../models/clockInHistory");
+const { request } = require("express");
 
 module.exports = class ClockController {
   static async clockIn(request, response) {
@@ -81,7 +82,7 @@ module.exports = class ClockController {
       user.clockOutDate = null;
       user.clockInDate = new Date().toString();
 
-      await clockHistory.save();
+      // await clockHistory.save();
       await user.save();
 
       response.status(200).send({
@@ -103,10 +104,28 @@ module.exports = class ClockController {
     }
   }
 
-  static async clockInHistory(_req, res) {
+  static async clockInHistory(_req, response) {
     try {
-      const users = await User.find({ clockInStatus: true });
-      res.status(200).send({
+      const users = await ClockInHistory.find();
+      response.status(200).send({
+        responseCode: "00",
+        responseMessage: "Successful",
+        data: users,
+      });
+    } catch (error) {
+      response.status(500).send({
+        responseCode: "96",
+        responseMessage: "Internal server error",
+        data: null,
+      });
+      console.log(error.message);
+    }
+  }
+  static async userClockinHistory(request, response) {
+    // console.log(request);
+    try {
+      const users = await ClockInHistory.findOne({ userId: request.user._id });
+      response.status(200).send({
         responseCode: "00",
         responseMessage: "Successful",
         data: users,

@@ -11,6 +11,8 @@ Router.post("/signin", signin);
 Router.post("/signup", signUp);
 Router.post("/clockin", auth, ClockController.clockIn);
 Router.post("/clockout", auth, ClockController.clockOut);
+Router.get("/getUserClockinHistory", auth, ClockController.userClockinHistory)
+Router.get("/clockinHistory", auth, ClockController.clockInHistory);
 Router.get("/getAllClockIn", auth, ClockController.clockInHistory);
 Router.get("/getAllParticipants", auth, UsersController.getAllParticipants);
 Router.get("/getUserInfo", auth, UsersController.getUserInfo);
