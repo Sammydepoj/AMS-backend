@@ -33,12 +33,12 @@ module.exports = class ClockController {
         });
       }
 
-      if (request.body.location !== location)
-        return response.status(400).send({
-          responseCode: "93",
-          responseMessage: "Unable to clock In: Invalid location",
-          data: null,
-        });
+      // if (request.body.location !== location)
+      //   return response.status(400).send({
+      //     responseCode: "93",
+      //     responseMessage: "Unable to clock In: Invalid location",
+      //     data: null,
+      //   });
       if (date > 14) {
         return response.status(403).send({
           responseCode: "93",
@@ -124,21 +124,21 @@ module.exports = class ClockController {
           data: null,
         });
       }
-      if (date < 14) {
-        return response.status(403).send({
-          responseCode: "93",
-          responseMessage: "Clock out time is 2pm",
-          data: {
-            clockInStatus: user.clockInStatus,
-            clockInTime: user.clockInDate,
-          },
-        });
-      }
+      // if (date < 14) {
+      //   return response.status(403).send({
+      //     responseCode: "93",
+      //     responseMessage: "Clock out time is 2pm",
+      //     data: {
+      //       clockInStatus: user.clockInStatus,
+      //       clockInTime: user.clockInDate,
+      //     },
+      //   });
+      // }
       user.clockInStatus = false;
       user.clockOutDate = new Date().toString();
       await user.save();
       let clockHistory = await ClockInHistory.findOne({
-        _id: request.user._id,
+        email: request.user.email,
       });
       clockHistory.clockOutDate = user.clockOutDate;
       clockHistory.clockInStatus = user.clockInStatus;
