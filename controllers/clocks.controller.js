@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const User = require("../models/users");
 const ClockInHistory = require("../models/clockInHistory");
+const { request } = require("express");
 
 module.exports = class ClockController {
   static async clockIn(request, response) {
@@ -56,20 +57,34 @@ module.exports = class ClockController {
         });
       }
 
-      user.clockInStatus = true;
-      user.clockOutDate = null;
-      user.clockInDate = new Date().toString();
-      await user.save();
       const clockHistory = new ClockInHistory({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        clockInDate: user.clockInDate,
-        clockInStatus: user.clockInStatus,
+        clockInDate: new Date().toString(),
+        clockInStatus: true,
         clockOutDate: null,
-        _id: request.user._id,
+        userId: request.user._id,
+        // _id: request.user._id,
       });
+
+      const currentUser = ClockInHistory.findOne({ _id: clockHistory._id });
+
+      const currentDay = new Date().getDate();
+      if (new Date(currentUser.clockInDate).getDate() === currentDay) {
+        response.status(403).send({
+          responseCode: "95",
+          responseMessage: "You are present today already",
+          data: null,
+        });
+      }
+      user.clockInStatus = true;
+      user.clockOutDate = null;
+      user.clockInDate = new Date().toString();
+
       await clockHistory.save();
+      await user.save();
+
       response.status(200).send({
         responseCode: "00",
         responseMessage: "Succesfully clocked In",
@@ -85,13 +100,32 @@ module.exports = class ClockController {
         data: null,
       });
       console.log(error.message);
+      console.log(error);
     }
   }
 
-  static async clockInHistory(_req, res) {
+  static async clockInHistory(_req, response) {
     try {
-      const users = await User.find({ clockInStatus: true });
-      res.status(200).send({
+      const users = await ClockInHistory.find();
+      response.status(200).send({
+        responseCode: "00",
+        responseMessage: "Successful",
+        data: users,
+      });
+    } catch (error) {
+      response.status(500).send({
+        responseCode: "96",
+        responseMessage: "Internal server error",
+        data: null,
+      });
+      console.log(error.message);
+    }
+  }
+  static async userClockinHistory(request, response) {
+    // console.log(request);
+    try {
+      const users = await ClockInHistory.findOne({ userId: request.user._id });
+      response.status(200).send({
         responseCode: "00",
         responseMessage: "Successful",
         data: users,
@@ -138,11 +172,13 @@ module.exports = class ClockController {
       user.clockOutDate = new Date().toString();
       await user.save();
       let clockHistory = await ClockInHistory.findOne({
-        email: request.user.email,
+      
+        userId: request.user._id,
       });
-      clockHistory.clockOutDate = user.clockOutDate;
-      clockHistory.clockInStatus = user.clockInStatus;
 
+      clockHistory.clockOutDate = user.clockOutDate;
+      clockHistory.clockInStatus = false;
+      console.log(clockHistory);
       await clockHistory.save();
       response.status(200).send({
         responseCode: "00",
