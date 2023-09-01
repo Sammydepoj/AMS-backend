@@ -82,7 +82,7 @@ module.exports = class ClockController {
       user.clockOutDate = null;
       user.clockInDate = new Date().toString();
 
-      await clockHistory.save();
+      // await clockHistory.save();
       await user.save();
 
       response.status(200).send({
